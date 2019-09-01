@@ -14,7 +14,7 @@ class CreateGovernoratesTable extends Migration
     public function up()
     {
         Schema::create('governorates', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string("nameAr");
             $table->string("nameEn");
         });

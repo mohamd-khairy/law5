@@ -15,6 +15,7 @@ use App\Model\Chamber;
 use App\Model\RequestStatus;
 use App\Model\Certificate;
 use App\Model\CertificateType;
+use Carbon\Carbon;
 
 class AssessmentController extends Controller
 {
@@ -340,6 +341,7 @@ class AssessmentController extends Controller
         $data['localPackagingComponentsDetailed'] = null;
         $data['importedComponentsDetailed'] = null;
         $data['importedPackagingComponentsDetailed'] = null;
+        $data['assessmentDate']= Carbon::now();
         $savedAssessment = Assessment::create($data);
         app('App\Http\Controllers\LogController')->Logging_create("assessments",$savedAssessment );
 
@@ -414,6 +416,7 @@ class AssessmentController extends Controller
         $data['localPackagingComponentsTotals'] = null;
         $data['importedComponentsTotals'] = null;
         $data['importedPackagingComponentsTotals'] = null;
+        $data['assessmentDate']= Carbon::now();
         $savedAssessment = Assessment::create($data);
         if (isset($savedAssessment)) {
             if (isset($request->all()['localComponentsDetailed'])) {

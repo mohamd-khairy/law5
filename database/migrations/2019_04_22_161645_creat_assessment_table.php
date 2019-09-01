@@ -14,7 +14,7 @@ class CreatAssessmentTable extends Migration
     public function up()
     {
         Schema::create('assessments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->bigInteger('applicantId')->unsigned()->index();
             // Constraints declaration
            $table->integer('chamberId')->unsigned()->index();
@@ -46,6 +46,7 @@ class CreatAssessmentTable extends Migration
                    ->references('id')->on('applicants');
             
             $table->boolean('isDeleted')->default(false);
+            $table->timestamp('assessmentDate')->nullable();
          
         });
     }

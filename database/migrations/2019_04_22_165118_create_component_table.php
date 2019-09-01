@@ -14,7 +14,7 @@ class CreateComponentTable extends Migration
     public function up()
     {
         Schema::create('components', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
            $table->bigInteger('assessmentId')->unsigned()->index();
             $table->string('componentName');
             $table->string('unit');

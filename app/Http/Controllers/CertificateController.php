@@ -5,7 +5,7 @@ use App\Model\RequestModel;
 use App\Model\Role;
 use App\Model\Certificate;
 use App\Model\CertificateType;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Model\RequestStatus;
 use App\Model\RequestAction;
@@ -15,8 +15,10 @@ use App\Model\Action;
 use Carbon\Carbon;
 use App\Model\Applicant;
 use App\Model\Assessment;
+use App\Model\Attachment;
 use App\Model\Setting;
 use App\Http\Services\CertificateService;
+use Illuminate\Support\Facades\File;
 
 class CertificateController extends Controller
 {
@@ -180,5 +182,89 @@ class CertificateController extends Controller
             $pdf->loadView("law5", compact('certificate', 'assessment', 'applicant', 'setting'));
         }
         return response()->make($pdf->stream(), 200, ['content-type' =>  'application/pdf']);
+    }
+
+    public function renewCertificate(Request $request)
+    {
+        $this->validate($request, ['cert_id' => 'required|integer']);
+        $token = trim(explode(' ', $request->header("Authorization"))[1]);
+        if (!empty($token)) {
+            $user = User::where('token', $token)->first();
+        } else {
+            return response("unathorize", 401);
+        }
+
+        $dataOfCertificate = Certificate::with("requests")->where("id", $request->cert_id)->first();
+        if (empty($dataOfCertificate)) {
+            return response()->json("There is no certificate with this id .", 404);
+        } 
+        $applicant = Applicant::where("id", $dataOfCertificate->requests->applicantId)->first();
+        if (empty($applicant)) {
+            return response()->json("There is no applicant with this id .", 404);
+        } 
+
+        if($applicant->id != $user->id){
+            return response()->json("This certificate not belongs to this user .", 400);
+        }
+
+        $this->CloneCertificate($request->cert_id);  
+        return $this->CloneRequestAndAssessment($dataOfCertificate->requests->id);  
+    }
+
+    public function CloneCertificate($cert_id)
+    {
+        $cert = Certificate::find($cert_id);
+        $cert  = $cert->replicate();
+        $cert->certificateNumber = null;
+        $cert->issueDate = null;
+        $cert->managerApproveDate = null;
+        $cert->save();
+        app('App\Http\Controllers\LogController')->Logging_create("certificate" , $cert);
+
+    }
+
+    public function CloneRequestAndAssessment($request_id)
+    {
+        $reqq = RequestModel::find($request_id);
+        //clone assessment
+        $ass = Assessment::find($reqq->assessmentId);
+        $ass  = $ass->replicate();
+        $ass->save();
+        //
+        //clone request
+        $req = $reqq->replicate();
+        $req->assessmentId = $ass->id;
+        $req->isRenewal = true;
+        $req->originalRequestId = $request_id;
+        $req->statusId = RequestStatus::where("key", "Draft")->first()->id;
+        $req->save();
+        //
+        //for logging create request
+        app('App\Http\Controllers\LogController')->Logging_create("requests",$req);
+        //for logging create assessment
+        app('App\Http\Controllers\LogController')->Logging_create("assessment",$ass);
+        
+        $this->CloneAttachments($dataOfCertificate->requests->id , $req->id);  
+
+        return response()->json($req->id, 200);
+    }
+
+    
+    public function CloneAttachments($request_id , $new_request_id)
+    {
+        $attachments = Attachment::where("requestId", $request_id)->get();
+        if (!empty($attachments)) {
+            foreach ($attachments as $attach) {
+                $ext = explode('.', $attach)[1];
+                $fileName = Str::random(30).'.'.$ext;
+                $att = $attach->replicate();
+                $att->requestId = $new_request_id;
+                $att->relativePath = $fileName;
+                $att->save();
+                if (file_exists($attach->relativePath)) {
+                    File::copy(base_path($attach->relativePath), base_path($fileName));
+                }
+            }
+        }
     }
 }

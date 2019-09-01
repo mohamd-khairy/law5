@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->boolean('isActive');
             $table->boolean('isDeleted')->default(false);
             $table->text('resetPasswordCode')->nullable();
-            $table->timestamps('resetPasswordCodeCreationdate')->nullable();
+            $table->date('resetPasswordCodeCreationdate')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

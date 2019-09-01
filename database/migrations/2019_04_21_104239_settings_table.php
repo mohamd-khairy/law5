@@ -14,7 +14,7 @@ class SettingsTable extends Migration
     public function up()
     {
         Schema::create('Settings', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->integer('automaticAssignDelay')->default(60);
             $table->integer('automaticIDAApproveDelay')->default(60);
             $table->integer('law5CertificatePercentage')->default(40);

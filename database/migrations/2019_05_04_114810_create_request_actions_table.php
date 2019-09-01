@@ -14,7 +14,7 @@ class CreateRequestActionsTable extends Migration
     public function up()
     {
         Schema::create('request_actions', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('requestId');
             $table->unsignedInteger('actionId');
             $table->unsignedInteger('byUserId')->nullable();

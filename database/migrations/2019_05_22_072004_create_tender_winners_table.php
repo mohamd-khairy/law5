@@ -14,7 +14,7 @@ class CreateTenderWinnersTable extends Migration
     public function up()
     {
         Schema::create('tender_winners', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('certificateId');
             $table->string('TenderDescription');
             $table->double('TenderValue');

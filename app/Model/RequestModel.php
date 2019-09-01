@@ -17,7 +17,7 @@ class RequestModel extends Model
         "representativeName", "representativeNationalId", "representativeTypeId", "representativeDelegationNumber",
         "representativeDelegationIssuedBy", "representativeTelephone", "representativeFax", "representativeMobile","chamberMemberNumber",
         "representativeEmail", "representativeMailingAddress","industrialRegistry",
-        "isOriginalsReceived", "isChamberMember", "isSubscriptionFeesPaid", "isDeleted"
+        "isOriginalsReceived", "isChamberMember", "isSubscriptionFeesPaid", "isDeleted","isRenewal","originalRequestId"
     ];
 
 

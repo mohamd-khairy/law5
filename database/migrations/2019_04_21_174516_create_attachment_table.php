@@ -14,7 +14,7 @@ class CreateAttachmentTable extends Migration
     public function up()
     {
         Schema::create('attachments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('requestId')->nullable();
             $table->unsignedInteger('applicantId')->nullable();                  
             $table->boolean('isRepresentativeProof')->default(false);
