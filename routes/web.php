@@ -313,3 +313,9 @@ $app->group(['prefix' => 'api', "middleware" => "auth"], function () use ($app) 
     $app->get('assessmentSummary/{id}', 'AssessmentController@summary'); //all
 
 });
+
+
+//certificate Renew mohamed khairy
+$app->group(['prefix' => 'api', "middleware" => "PermissionFor:Applicant"], function () use ($app) { 
+    $app->post('renewCertificate', 'CertificateController@renewCertificate'); //applicant
+});

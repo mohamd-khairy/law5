@@ -1,11 +1,9 @@
 <?php namespace App\Http\Controllers;
-
-
 use App\Model\RequestModel;
 use App\Model\Role;
 use App\Model\Certificate;
 use App\Model\CertificateType;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Model\RequestStatus;
 use App\Model\RequestAction;
@@ -15,16 +13,16 @@ use App\Model\Action;
 use Carbon\Carbon;
 use App\Model\Applicant;
 use App\Model\Assessment;
+use App\Model\Attachment;
 use App\Model\Setting;
 use App\Http\Services\CertificateService;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateController extends Controller
 {
-
     const MODEL = "App\Model\Certificate";
-
     use RESTActions;
-
 
     public function IssueCertificates(Request $request)
     {
@@ -56,7 +54,6 @@ class CertificateController extends Controller
                 $old=$certificate->getOriginal();
                 $certificate->save();
                 app('App\Http\Controllers\LogController')->Logging_update("certificates",$certificate,$old);
-
                 array_push(
                     $response,
                     [
@@ -67,7 +64,6 @@ class CertificateController extends Controller
                     ]
                 );
             }
-
             $action = new RequestAction();
             $header2 = trim(explode(' ', $request->header("Authorization"))[1]);
             if (!empty($header2)) {
@@ -160,19 +156,16 @@ class CertificateController extends Controller
     
     public function pdf(Request $request)
     {
-
         $this->validate($request, ['cert_id' => 'required|integer']);
         $cert_id = $request->cert_id;
         //make Pdf
         $pdf = app()->make('dompdf.wrapper');
         $pdf->setPaper('A4', 'landscape');
-
         $certificate = Certificate::with("requests")->where("id", $cert_id)->first();
         $applicant = Applicant::with("government", "city","sector")->where("id", $certificate->requests->applicantId)->first();
         $setting = Setting::first();
         $assessment = app('App\Http\Controllers\AssessmentController')->GetAssessment($certificate->requests->assessmentId);
         $assessment = json_decode($assessment->content(), true);
-
         if ($certificate->certificateTypeId == 2) {
             $manufactor=$assessment['manufactoringByOthers'];
             $pdf->loadView("export", compact('certificate', 'assessment', 'applicant', 'setting' ,"manufactor"));
@@ -180,5 +173,90 @@ class CertificateController extends Controller
             $pdf->loadView("law5", compact('certificate', 'assessment', 'applicant', 'setting'));
         }
         return response()->make($pdf->stream(), 200, ['content-type' =>  'application/pdf']);
+    }
+
+    public function renewCertificate(Request $request)
+    {
+        $this->validate($request, ['cert_id' => 'required|integer']);
+        $cert_id = $request->cert_id;
+        $token = trim(explode(' ', $request->header("Authorization"))[1]);
+        if (!empty($token)) {
+            $user = User::where('token', $token)->first();
+        } else {
+            return response("unathorize", 401);
+        }
+        $dataOfCertificate = Certificate::with("requests")->where("id", $cert_id)->first();
+        if (empty($dataOfCertificate)) {
+            return response()->json("There is no certificate with this id .", 404);
+        } 
+        $applicant = Applicant::where("id", $dataOfCertificate->requests->applicantId)->first();
+        if (empty($applicant)) {
+            return response()->json("There is no applicant with this id .", 404);
+        } 
+        if($applicant->userId != $user->id){
+            return response()->json("This certificate not belongs to this user .", 400);
+        }
+        
+        return $this->CloneRequestAndAssessment($dataOfCertificate->requests->id , $cert_id);  
+    }
+   
+    public function CloneRequestAndAssessment($request_id , $cert_id)
+    {
+        $reqq = RequestModel::find($request_id);
+        //clone assessment
+        $ass = Assessment::find($reqq->assessmentId);
+        $ass  = $ass->replicate();
+        $ass->save();
+        //
+        //clone request
+        $req = $reqq->replicate();
+        $req->assessmentId = $ass->id;
+        $req->isRenewal = true;
+        $req->originalRequestId = $request_id;
+        $req->statusId = RequestStatus::where("key", "Draft")->first()->id;
+        $req->save();
+        //
+        //for logging create request
+        app('App\Http\Controllers\LogController')->Logging_create("requests" , $req);
+        //for logging create assessment
+        app('App\Http\Controllers\LogController')->Logging_create("assessment" , $ass);
+
+        $this->CloneCertificate($cert_id , $req->id);  
+        $this->CloneAttachments($request_id , $req->id);  
+
+        return response()->json($req->id, 200);
+    }
+
+    public function CloneCertificate($cert_id , $new_request_id)
+    {
+        $cert = Certificate::find($cert_id);
+        $cert  = $cert->replicate();
+        $cert->requestId = $new_request_id;
+        $cert->certificateNumber = null;
+        $cert->issueDate = null;
+        $cert->managerApproveDate = null;
+        $cert->isWinnedTender = 0;
+        $cert->isDeleted = 0;
+        $cert->save();
+        app('App\Http\Controllers\LogController')->Logging_create("certificate" , $cert);
+    }
+    
+    public function CloneAttachments($request_id , $new_request_id)
+    {
+        $attachments = Attachment::where("requestId", $request_id)->get();
+        if (!empty($attachments)) {
+            foreach ($attachments as $attach) {
+                $ext = explode('.', $attach->relativePath)[1];
+                $fileName = time().Str::random(30).'.'.$ext;
+                $att = $attach->replicate();
+                $att->requestId = $new_request_id;
+                $att->relativePath = $fileName;
+                $att->save();
+                if (file_exists($attach->relativePath)) {
+                    File::copy(base_path("public/storage/upload/".$attach->relativePath) 
+                    ,base_path("public/storage/upload/".$fileName));
+                }
+            }
+        }
     }
 }
