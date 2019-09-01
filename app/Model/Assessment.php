@@ -31,6 +31,7 @@ class Assessment extends Model
         "importedComponentsTotals",
         "importedPackagingComponentsTotals",
         "isDeleted",
+        "assessmentDate"
     ];
 
     protected $dates = [];
