@@ -1,0 +1,180 @@
+{
+    "budget": {
+        "annualProductionCapacity": 2000000,
+        "powerResources":  187453.44,
+        "localSpareParts": null,
+        "importedSpareParts": 105751.131428571,
+        "researchAndDevelopment": 50691.0342857143,
+        "annualDepreciation": 1498107.96,
+        "administrativeExpenses": 2046755.98285714,
+        "marketingExpenses": 7858271.77714286,
+        "otherExpenses": 87492.1885714286,
+        "manufactoringByOthers": false
+    },
+    "localComponents": [
+        {
+            "componentName": "Cibafast-H",
+            "unit": "KG",
+            "quantity": 0.005,
+            "unitPrice": 65,
+            "supplier": "Biotional Comp."
+        },
+        {
+            "componentName": "DL Panthenol",
+            "unit": "KG",
+            "quantity": 0.249375,
+            "unitPrice": 0.0209,
+            "supplier": "Merag Comp."
+        }
+    ],
+    "localPackagingComponents": [
+        {
+            "componentName": "PS Cap Vatika Gel 210/250ml common",
+            "unit": "PC",
+            "quantity": 1,
+            "unitPrice": 1.54664,
+            "supplier": "sandoz Comp."
+        },
+        {
+            "componentName": "PP Clear lid Vatika Gel 210/250ml common",
+            "unit": "PC",
+            "quantity": 1,
+            "unitPrice": 0.269,
+            "supplier": "Royal Comp."
+        },
+        {
+            "componentName": "PS CONTAINER-VAT STYLING GEL 250G COMMON",
+            "unit": "PC",
+            "unitPrice": 1.569,
+            "supplier": "Elhkma Comp."
+        },
+        {
+            "componentName": "CFB-Vat Styling Gel 250g Common",
+            "unit": "PC",
+            "quantity": 0.0416666666666667,
+            "unitPrice": 10.54,
+            "supplier": "Elhoda Comp."
+        }
+    ],
+    "importedComponents": [
+        {
+            "componentName": "Aloe Vera ExtractWS-Pioma",
+            "unit": "KG",
+            "quantity": 0.010000,
+            "unitPrice": 50.61,
+            "rate": 17.7006,
+            "CIF": null,
+            "supplier": "Tandon Comp"
+        },
+        {
+            "componentName": "Ghergir Extract",
+            "unit": "KG",
+            "quantity": 0.030000,
+            "unitPrice": 85,
+            "rate": 1.0000,
+            "CIF": null,
+            "supplier": "Cosmotic Comp."
+        },
+        {
+            "componentName": "Triethanolamine",
+            "unit": "KG",
+            "quantity": 0.010000,
+            "unitPrice": 2.05,
+            "rate": 17.6985,
+            "CIF": null,
+            "supplier": "Nerhadou Comp."
+        },
+        {
+            "componentName": "GLYCERINE",
+            "unit": "KG",
+            "quantity": 0.040000,
+            "unitPrice": 25,
+            "rate": 17.7808,
+            "CIF": null,
+            "supplier": "Global Napi Comp."
+        },
+        {
+            "componentName": "SODIUM METHYL PARABEN IP",
+            "unit": "KG",
+            "quantity": 0.020000,
+            "unitPrice": 6.2,
+            "rate": 17.7808,
+            "CIF": null,
+            "supplier": "Flix Comp."
+        },
+        {
+            "componentName": "CARBOPOL 940",
+            "unit": "KG",
+            "quantity": 0.020000,
+            "unitPrice": 9,
+            "rate": 17.7567,
+            "CIF": null,
+            "supplier": "Cobal Comp."
+        },
+        {
+            "componentName": "Cibafast-H",
+            "unit": "KG",
+            "quantity": 0.050000,
+            "unitPrice": 63,
+            "rate": 20.3382,
+            "CIF": null,
+            "supplier": "Colmid Comp."
+        },
+        {
+            "componentName": "DL Panthenol",
+            "unit": "KG",
+            "quantity": 0.249375,
+            "unitPrice": 0.0209,
+            "rate": 17.7174,
+            "CIF": null,
+            "supplier": "Euro Comp."
+        },
+        {
+            "componentName": "EMULGIN HRE 40 (PEG-40 Hydro. Castoroil)",
+            "unit": "KG",
+            "quantity": 0.010000,
+            "unitPrice": 3.5,
+            "rate": 20.5559,
+            "CIF": 0.03,
+            "supplier": "Donal Comp."
+        },
+        {
+            "componentName": "Euxyl K 510",
+            "unit": "KG",
+            "quantity": 0.080000,
+            "unitPrice": 6.79,
+            "rate": 17.7006,
+            "CIF": 0.02,
+            "supplier": "Golden Cosmotic Comp."
+        },
+        {
+            "componentName": "Luviskol Va 64 W",
+            "unit": "KG",
+            "quantity": 0.022500,
+            "unitPrice": 2.88,
+            "rate": 17.7594,
+            "CIF": null,
+            "supplier": "Daramin Comp."
+        }
+    ],
+    "importedPackagingComponents": [
+        {
+            "componentName": "Lbl Vat Wet Look Styling Gel 250g",
+            "unit": "PC",
+            "quantity": 1.00,
+            "unitPrice": 0.272,
+            "rate": 18,
+            "CIF": null,
+            "supplier": "pharco Comp."
+        },
+        {
+            "componentName": "Barcode label Vatika Gel 250 ml Wet Look",
+            "unit": "PC",
+            "quantity": 1.00,
+            "unitPrice": 0.11,
+            "rate": 18,
+            "CIF": 0.03,
+            "supplier": "Bioderma Comp."
+        }
+    ]
+}
