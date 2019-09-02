@@ -261,4 +261,40 @@ class CertificateController extends Controller
             }
         }
     }
+
+    public function expired_and_notRenewed(Request $request)
+    {
+        $this->validate($request, ['toDate' => 'required|date']);
+
+        $toDate = date("Y-m-d",strtotime($request->toDate));
+
+        $certificate=Certificate::with('requests')->whereHas("requests", function ($q){
+            $q->where('isRenewal', false);
+        })->whereDate('created_at',"<=", $toDate)->get();
+
+        $response = array();
+        foreach ($certificate as $cert) {
+            $expired = CertificateService::isExpired($cert);
+            if($expired){
+                $applicant = Applicant::where("id", $cert->requests->applicantId)->first();
+                $assessment = Assessment::where('applicantId' , $applicant->userId)->first();
+                $certType = CertificateType::find($cert->certificateTypeId);
+                array_push(
+                    $response,
+                    [
+                        "id" => $cert->id,
+                        "productName" => $assessment->productName,
+                        "companyName"    => $applicant->facilityName,
+                        "certificateNumber" =>  $cert->certificateNumber,
+                        "certificateTypeNameAr" => $certType->nameAr,
+                        "certificateTypeNameEn" => $certType->name,
+                        "issueDate" => $cert->issueDate,
+                        "certificateUrl" => "/pdf?cert_id=".$cert->id,
+                        "isExpired" => $expired,
+                    ]
+                );
+            }
+        }
+        return response()->json($response, 200);
+    }
 }

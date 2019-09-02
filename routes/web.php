@@ -319,3 +319,7 @@ $app->group(['prefix' => 'api', "middleware" => "auth"], function () use ($app) 
 $app->group(['prefix' => 'api', "middleware" => "PermissionFor:Applicant"], function () use ($app) { 
     $app->post('renewCertificate', 'CertificateController@renewCertificate'); //applicant
 });
+
+$app->group(['prefix' => 'api', "middleware" => "PermissionFor:Admin"], function () use ($app) { 
+    $app->post('expired_and_notRenewed', 'CertificateController@expired_and_notRenewed'); //admin
+});

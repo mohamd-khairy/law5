@@ -495,6 +495,8 @@ class RequestController extends Controller
                     "isIDAFeesPaid" => $item['isIDAFeesPaid'],
                     "isFEIFeesPaid" => $item['isFEIFeesPaid'],
                     "isSubscriptionFeesPaid" => $item['isSubscriptionFeesPaid'],
+                    "isRenewal" => $item['isRenewal'],
+                    "originalRequestId" => $item['originalRequestId'],
                     "createdAt" => $item['created_at'],
                     "updatedAt" => $item['updated_at']
                 ]
@@ -588,6 +590,8 @@ class RequestController extends Controller
                 "isSubscriptionFeesPaid" => ($item['isSubscriptionFeesPaid']) ? true : false,
                 "isIDAFeesPaid" => ($item['isIDAFeesPaid']) ? true : false,
                 // "isFEIFeesPaid" => ($item['isFEIFeesPaid']) ? true : false,
+                "isRenewal" => $item['isRenewal'],
+                "originalRequestId" => $item['originalRequestId'],
                 "createdAt" => $item['created_at'],
                 "updatedAt" => $item['updated_at']
 
