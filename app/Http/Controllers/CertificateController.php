@@ -252,10 +252,12 @@ class CertificateController extends Controller
                 $att->requestId = $new_request_id;
                 $att->relativePath = $fileName;
                 $att->save();
-                if (file_exists($attach->relativePath)) {
-                    File::copy(base_path("public/storage/upload/".$attach->relativePath) 
-                    ,base_path("public/storage/upload/".$fileName));
+                $path = Storage::disk('local')->path('upload/'.$attach->relativePath);
+                $NewPath = Storage::disk('local')->path('upload/'.$fileName);
+                if (file_exists($path)) {
+                    File::copy($path , $NewPath);
                 }
+                return $NewPath;
             }
         }
     }
