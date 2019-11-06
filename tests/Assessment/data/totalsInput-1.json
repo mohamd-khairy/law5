@@ -1,0 +1,17 @@
+{
+    "manufactoringByOthers": false,
+    "manufactoringByOthers_OtherExpenses": 0,
+    "localComponents": 0,
+    "localPackagingComponents": 0,
+    "localSpareParts": 0,
+    "powerResources": 0,
+    "researchAndDevelopment": 0,
+    "wages": 0,
+    "annualDepreciation": 0,
+    "administrativeExpenses": 0,
+    "marketingExpenses": 0,
+    "otherExpenses": 0,
+    "importedComponents": 0,
+    "importedPackagingComponents": 0,
+    "importedSpareParts": 0
+}

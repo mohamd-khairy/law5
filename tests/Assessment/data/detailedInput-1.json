@@ -1,0 +1,56 @@
+{
+    "budget": {
+        "annualProductionCapacity": 1,
+        "powerResources": 0,
+        "localSpareParts": 0,
+        "importedSpareParts": 100,
+        "researchAndDevelopment": 0,
+        "wages": 0,
+        "annualDepreciation": 0,
+        "administrativeExpenses": 0,
+        "marketingExpenses": 0,
+        "otherExpenses": 0,
+        "manufactoringByOthers_OtherExpenses": 0,
+        "manufactoringByOthers": false
+    },
+    "localComponents": [
+        {
+            "componentName": "string",
+            "unit": "string",
+            "quantity": 0,
+            "unitPrice": 0,
+            "supplier": "string"
+        }
+    ],
+    "localPackagingComponents": [
+        {
+            "componentName": "string",
+            "unit": "string",
+            "quantity": 0,
+            "unitPrice": 0,
+            "supplier": "string"
+        }
+    ],
+    "importedComponents": [
+        {
+            "componentName": "string",
+            "unit": "string",
+            "quantity": 1,
+            "unitPrice": 100,
+            "rate": 1,
+            "CIF": 0,
+            "supplier": "string"
+        }
+    ],
+    "importedPackagingComponents": [
+        {
+            "componentName": "string",
+            "unit": "string",
+            "quantity": 1,
+            "unitPrice": 100,
+            "rate": 1,
+            "CIF": 0,
+            "supplier": "string"
+        }
+    ]
+}

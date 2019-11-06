@@ -1,0 +1,8 @@
+{
+    "budget.wages": [
+        "The budget.wages field is required when budget.manufactoring by others is ."
+    ],
+    "localPackagingComponents.2.quantity": [
+        "The localPackagingComponents.2.quantity field is required."
+    ]
+}
