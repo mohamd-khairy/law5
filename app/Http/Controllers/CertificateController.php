@@ -383,8 +383,8 @@ class CertificateController extends Controller
         /** user data */
         $user = userData();
 
-        $fromDate = date("Y-m-d" , strtotime($request->fromDate)) ?? "0000-00-00";
-        $toDate = date("Y-m-d" , strtotime($request->toDate))  ?? Carbon::now();
+        $fromDate = $request->fromDate ? date("Y-m-d" , strtotime($request->fromDate)) : "0000-00-00";
+        $toDate = $request->toDate ? date("Y-m-d" , strtotime($request->toDate))  : Carbon::now();
         $productName = $request->productName ?? null;
         $companyName = $request->companyName ?? null;
         $certificateNumber = $request->certificateNumber ?? null;
