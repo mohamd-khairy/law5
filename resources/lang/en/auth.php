@@ -15,6 +15,7 @@ return [
     'wrong'   => ['message' => ["SomeThing Wrong..."]],
     'loginMessage'   => ['message' => ["Invalid Email or password."]],
     'isActive'   => ['message' => ["Your account is not activated yet."]],
+    'isEmailVerified'   => ['message' => ["Email is not verified !."]],
     'ResetPasswordAfterSix'   => ['message' => ["try again after six hours.. "]],
     'ُExpiredCode'   => ['message' => ["this code is expired.. "]],
     'ForgetPasswordPage'   => ['message' => ["Go to Forgot Password Page.. "]],
@@ -25,4 +26,6 @@ return [
     'codeExpired'   => ['message' => ["this code is expired.. "]],
     'codeSentSuccessfully'   => ['message' => ["Code Sent Successfully.."]],
     'mailNotSend'   => ['message' => ["Code Not Sent !.."]],
+    'emailVerified'  => ['message' => ["Email verified successfully .."]],
+
 ];

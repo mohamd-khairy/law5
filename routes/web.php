@@ -20,6 +20,8 @@ $app->group(['prefix' => 'api'], function () use ($app) {
     $app->post('/register', 'UsersController@register');
     $app->post('/login', 'UsersController@login');
 
+    $app->put('/confirmEmail', 'UsersController@ConfirmEmail');
+
     $app->post('/forgotPassword', 'UsersController@ResetPassword');
     $app->post('/resetPassword', 'UsersController@SendResetPasswordCode');
     

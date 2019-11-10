@@ -39,7 +39,6 @@ class UserRegisterEmailConfirm extends Mailable
             ->with([
                 'user.name' => $this->user->name,
                 'user.email' => $this->user->email,
-            ])
-            ;
+            ]);
     }
 }

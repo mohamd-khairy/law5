@@ -1,0 +1,416 @@
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { GeneralLocalService } from 'src/app/shared/general-local-storage';
+import { DetailedAssessment } from './detailed/detailed-assessment';
+import { DetailedBudget, TotalsBudget } from './budget';
+import { AssessmentService } from './assessment.service';
+import { Chamber, ChamberNotificationArgs, ManufactoringNotificationArgs } from 'src/app/admin/definitions/chamber/chamber';
+import { AssessmentMethodEnum } from 'src/app/shared/enums/aseesment-method.enum';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { DetailedNotificationArgs } from './detailed/budget/detailed-notification-args';
+import { TotalsNotificationArgs } from './totals/totals-assessment/totals-notification-args';
+import { MatStepper, MatSnackBar, MatSnackBarRef } from '@angular/material';
+import { ToastaService } from 'ngx-toasta';
+import { AssessmentResult } from './assessment-result/assessment-result';
+import { AuthService } from 'src/app/Pages/Session/user/auth.service';
+import { SettingsService } from 'src/app/admin/settings/settings.service';
+import { GeneralSettings } from 'src/app/admin/settings/general-settings/general-settings';
+import { EmbryoService } from 'src/app/Services/Embryo.service';
+import { ChamberVM } from './chamberVM';
+import { AssessmentViewModelResolved } from './assessment-model';
+import { TranslateService } from '@ngx-translate/core';
+import { SharedVariablesService } from 'src/app/shared-variables.service';
+import { LanguageCharEnum } from 'src/app/shared/enums/language';
+import { LoadingBarService } from '@ngx-loading-bar/core';
+
+@Component({
+  selector: 'app-assessment',
+  templateUrl: './assessment.component.html',
+  styleUrls: ['./assessment.component.css']
+})
+export class AssessmentComponent implements OnInit, OnDestroy {
+  isRelatedAssessment = 0;
+  assessmentViewModelResolved: AssessmentViewModelResolved;
+  @ViewChild('stepper') stepper: MatStepper;
+  totalsBudget: TotalsBudget;
+  detailedBudgetMandatoryControls: string[] = [
+    'annualProductionCapacity',
+    'powerResources',
+    'researchAndDevelopment',
+    'wages',
+    'annualDepreciation',
+    'administrativeExpenses',
+    'marketingExpenses',
+    'otherExpenses'
+  ];
+  totalsBudgetMandatoryControls: string[] = [
+    'powerResources',
+    'researchAndDevelopment',
+    'wages',
+    'annualDepreciation',
+    'administrativeExpenses',
+    'marketingExpenses',
+    'otherExpenses'
+  ];
+  componentsControls: string[] = ['localComponents', 'importedComponents'];
+  packagingComponentsControls: string[] = [
+    'localPackagingComponents',
+    'importedPackagingComponents'
+  ];
+  sparePartsControls: string[] = ['localSpareParts', 'importedSpareParts'];
+  isLargeScreen = true;
+  detailedForm: FormGroup;
+  totalsForm: FormGroup;
+  chamberForm: FormGroup;
+  manufactoringByOthers: boolean;
+  detailedAssessmentMethod: AssessmentMethodEnum = AssessmentMethodEnum.detailed;
+  totalsAssessmentMethod: AssessmentMethodEnum = AssessmentMethodEnum.totals;
+  selectedChamber = new ChamberVM('', new Chamber(), this.manufactoringByOthers);
+  isLinear = true;
+  detailedAssessment: DetailedAssessment;
+  assessmentResult: AssessmentResult = new AssessmentResult();
+  private detailedSubscription;
+  private totalsSubscription;
+  errorMessage: string;
+  law5CertificatePercentage: number;
+  exportFundPercentage: number;
+  private sub: Subscription = new Subscription();
+  relatedRequestId: number;
+  snackBarRef: any;
+  constructor(
+    private _generalLocalService: GeneralLocalService,
+    private _router: Router,
+    private _toastr: ToastaService,
+    private _assessmentService: AssessmentService,
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+    private _settingsService: SettingsService,
+    private _embryoService: EmbryoService,
+    private _route: ActivatedRoute,
+    private _translateService: TranslateService,
+    private _snackBar: MatSnackBar,
+    private _sharedVariableService: SharedVariablesService,
+    private loader: LoadingBarService
+  ) { }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.updateScreenSize(window.innerWidth);
+  }
+
+  updateScreenSize(width: number) {
+    if (width >= 768) {
+      this.isLargeScreen = true;
+    } else {
+      this.isLargeScreen = false;
+    }
+  }
+  public getCookiePopupResponse(response: any) {
+
+
+    if (response) {
+      // call delete chamber service
+      this._generalLocalService.set('saveCookie', true);
+    }
+  }
+
+  ngOnInit(): void {
+    this.sub.add(this._translateService.stream(['general.label.cookie', 'general.label.cookieOk']).subscribe(
+      translate => {
+        const hasAcceptedCookies = this._generalLocalService.get('hasAcceptedCookies');
+        if (!hasAcceptedCookies) {
+          const cssClass = this._generalLocalService.get('language').value.char === LanguageCharEnum.english ? 'ltr-snackbar' : 'rtl-snackbar';
+          setTimeout(() => {
+            this.snackBarRef = this._snackBar.open(translate['general.label.cookie'], translate['general.label.cookieOk'], {
+              duration: 0,
+              panelClass: [cssClass]
+            });
+            this.dismissSnackBar();
+          });
+        }
+      }));
+    this.isRelatedAssessment = +this._route.snapshot.paramMap.get('related');
+    this.relatedRequestId = +this._route.snapshot.paramMap.get('requestId');
+    this.sub.add(this._route.data.subscribe(data => {
+      this.assessmentViewModelResolved = data['resolvedAssessment'];
+
+      this.selectedChamber = this.assessmentViewModelResolved.chamberVM;
+      this.manufactoringByOthers = this.assessmentViewModelResolved.chamberVM.manufactoringByOthers;
+      this.detailedAssessment = this.assessmentViewModelResolved.detailedAssessment;
+      this.totalsBudget = this.assessmentViewModelResolved.totalsBudget;
+    }));
+
+    this.sub.add(this._settingsService.getGeneralSettings().subscribe((val: GeneralSettings) => {
+      this.law5CertificatePercentage = val.law5CertificatePercentage;
+      this.exportFundPercentage = val.exportFundPercentage;
+    }));
+
+    this.updateScreenSize(window.innerWidth);
+    this.detailedForm = this._formBuilder.group({});
+    this.totalsForm = this._formBuilder.group({});
+
+    this.runIntervalAutoSave();
+
+    this.detailedAssessment.budget.manufactoringByOthers = this.manufactoringByOthers;
+    this.totalsBudget.manufactoringByOthers = this.manufactoringByOthers;
+  }
+
+  dismissSnackBar() {
+    this.snackBarRef.afterDismissed().subscribe((action => {
+      if (action.dismissedByAction) {
+        this._generalLocalService.set('hasAcceptedCookies', true);
+      }
+    }));
+  }
+
+  // ngAfterViewInit() {
+  //   setTimeout(() => {
+  //     const cookie = this._generalLocalService.get('saveCookie');
+  //     if (cookie == null) {
+  //       this._translateService.get('general.label.cookie').subscribe(
+  //         data => {
+  //           this._embryoService.confirmationPopup(data).subscribe(
+  //             res => {
+  //               this.getCookiePopupResponse(res);
+  //             });
+  //         });
+  //     }
+  //   });
+  // }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+    if (this.detailedSubscription) {
+      this.detailedSubscription.unsubscribe();
+    }
+    if (this.totalsSubscription) {
+      this.totalsSubscription.unsubscribe();
+    }
+    this._snackBar.dismiss();
+  }
+
+  autoSaveDetailedAssessment(msg: string) {
+    this._generalLocalService.set('detailed-assessment', <DetailedAssessment>(
+      this.detailedAssessment
+    ));
+    // this._toastr.success(msg);
+  }
+
+  autoSaveTotalsAssessment(msg: string) {
+    this._generalLocalService.set('totals-assessment', <TotalsBudget>this.totalsBudget);
+    // this._toastr.success(msg);
+  }
+
+  calculateDetailed() {
+    this.assessmentResult.assessmentScorePercent = null;
+    this.sub.add(this._assessmentService.calculateDetailed(this.detailedAssessment).subscribe(
+      data => {
+
+        this.onSaveComplete(data);
+        this.stepper.selectedIndex = this.stepper.steps.length - 1;
+        this.sub.add(this._translateService.get('assessment.assessmentSavedForLater').subscribe(
+          translate => {
+            this.autoSaveDetailedAssessment(translate);
+          }));
+      },
+      (error: any) => {
+        this._toastr.error(error);
+      }
+    ));
+  }
+
+  calculateTotals() {
+    this.assessmentResult.assessmentScorePercent = null;
+    this.sub.add(this._assessmentService.calculateTotals(this.totalsBudget).subscribe(
+      data => {
+        this.onSaveComplete(data);
+        this.stepper.selectedIndex = this.stepper.steps.length - 1;
+        this._translateService.get('assessment.assessmentSavedForLater').subscribe(
+          translate => {
+            this.autoSaveTotalsAssessment(translate);
+          });
+      },
+      (error: any) => {
+        this._toastr.error(error);
+      }
+    ));
+  }
+
+  assignDetailedBudget(notificationArgs: DetailedNotificationArgs) {
+    this.assessmentResult.assessmentScorePercent = null;
+    const newBudget = new DetailedBudget();
+    Object.keys(notificationArgs.budget).forEach(
+      key => (newBudget[key] = notificationArgs.budget[key])
+    );
+    this.detailedAssessment.budget = newBudget;
+    this.detailedForm = notificationArgs.formGroup;
+  }
+
+  assignTotalsBudget(notificationArgs: TotalsNotificationArgs) {
+    this.assessmentResult.assessmentScorePercent = null;
+    const newBudget = new TotalsBudget();
+    Object.keys(notificationArgs.budget).forEach(
+      key => (newBudget[key] = notificationArgs.budget[key])
+    );
+    this.totalsBudget = newBudget;
+    this.totalsForm = notificationArgs.formGroup;
+  }
+
+  isValidDetailedAssessment() {
+    const valid =
+      this.isValidDetailedBudget(this.detailedAssessment.budget) &&
+      this.detailedAssessment.importedComponents.length +
+      this.detailedAssessment.importedPackagingComponents.length +
+      this.detailedAssessment.localComponents.length +
+      this.detailedAssessment.localPackagingComponents.length >
+      0;
+    return valid;
+  }
+
+  isValidDetailedBudget(budget: DetailedBudget): boolean {
+    const found = Object.keys(budget).filter(key => budget[key] == null);
+    if (
+      !budget.manufactoringByOthers &&
+      (found.length === 0 ||
+        (this.numberOfExistElements(found, this.detailedBudgetMandatoryControls) === 0 &&
+          this.numberOfExistElements(found, this.sparePartsControls) <= 1))
+    ) {
+      return true;
+    } else if (budget.manufactoringByOthers && budget.otherExpenses !== null) {
+      return true;
+    }
+    return false;
+  }
+
+  isValidTotalsAssessment(): boolean {
+    const found = Object.keys(this.totalsBudget).filter(key => this.totalsBudget[key] == null);
+    if (
+      !this.totalsBudget.manufactoringByOthers &&
+      (found.length === 0 ||
+        (this.numberOfExistElements(found, this.totalsBudgetMandatoryControls) === 0 &&
+          this.numberOfExistElements(found, this.componentsControls) <= 1 &&
+          this.numberOfExistElements(found, this.packagingComponentsControls) <= 1 &&
+          this.numberOfExistElements(found, this.sparePartsControls) <= 1))
+    ) {
+      return true;
+    } else if (
+      this.totalsBudget.manufactoringByOthers &&
+      this.totalsBudget.otherExpenses !== null &&
+      this.numberOfExistElements(found, this.componentsControls) <= 1 &&
+      this.numberOfExistElements(found, this.packagingComponentsControls) <= 1
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  numberOfExistElements(arrayToSearchIn: string[], arrayOfElements: string[]): number {
+    let counter = 0;
+    arrayOfElements.forEach(element => {
+      if (arrayToSearchIn.includes(element)) {
+        counter++;
+      }
+    });
+
+    return counter;
+  }
+
+  onSaveComplete(data: AssessmentResult) {
+    this.assessmentResult = data;
+  }
+
+  changeManufactoring(manufactoringTypeNotification: ManufactoringNotificationArgs) {
+    this.chamberForm = manufactoringTypeNotification.form;
+    this.detailedAssessment.budget.manufactoringByOthers = manufactoringTypeNotification.manufactoringByOthers;
+    this.detailedAssessment.budget = Object.assign({}, this.detailedAssessment.budget);
+    this.detailedForm.updateValueAndValidity();
+
+    this.totalsBudget.manufactoringByOthers = manufactoringTypeNotification.manufactoringByOthers;
+    this.totalsBudget = Object.assign({}, this.totalsBudget);
+    this.totalsForm.updateValueAndValidity();
+  }
+
+  changeChamber(chamberNotification: ChamberNotificationArgs) {
+
+    this.selectedChamber.chamber = chamberNotification.chamber;
+    setTimeout(() => {
+      this.chamberForm = chamberNotification.form;
+    });
+    this.runIntervalAutoSave();
+    this.assessmentResult.assessmentScorePercent = null;
+  }
+
+  runIntervalAutoSave() {
+    if (this.selectedChamber.chamber.assessmentMethodNameEn === this.detailedAssessmentMethod) {
+      if (!this.detailedSubscription) {
+        this.detailedSubscription = interval(environment.autoSaveInMilliseconds).subscribe(() => {
+          this.sub.add(this._translateService.get('assessment.assessmentSavedAutomatically').subscribe(
+            data => {
+              this.autoSaveDetailedAssessment(data);
+            }));
+        });
+      }
+      if (this.totalsSubscription) {
+        this.totalsSubscription.unsubscribe();
+      }
+    } else if (this.selectedChamber.chamber.assessmentMethodNameEn === this.totalsAssessmentMethod) {
+      if (!this.totalsSubscription) {
+        this.totalsSubscription = interval(environment.autoSaveInMilliseconds).subscribe(() => {
+          this.sub.add(this._translateService.get('assessment.assessmentSavedAutomatically').subscribe(
+            data => {
+              this.autoSaveDetailedAssessment(data);
+            }));
+        });
+      }
+      if (this.detailedSubscription) {
+        this.detailedSubscription.unsubscribe();
+      }
+    }
+  }
+
+  isLoggedIn() {
+    return this._authService.isLoggedIn;
+  }
+
+  resetAssessment() {
+    this.sub.add(this._translateService.get('assessment.confirmReset').subscribe(
+      data => {
+        this.sub.add(this._embryoService.confirmationPopup(data).subscribe(
+          res => {
+            this.getPopupResponse(res);
+          }));
+      }));
+  }
+
+  removeCookies() {
+    this._generalLocalService.remove('chamber');
+    this._generalLocalService.remove('detailed-assessment');
+    this._generalLocalService.remove('totals-assessment');
+  }
+
+  /* public openConfirmationPopup() {
+
+    const message = 'Are you sure you want to reset?';
+    this._embryoService.confirmationPopup(message).
+      subscribe(res => { this.popupResponse = res; },
+        () => this.getPopupResponse(this.popupResponse)
+      );
+  } */
+
+  public getPopupResponse(response: any) {
+    if (response) {
+      this.loader.start();
+      this.stepper.selectedIndex = 0;
+      this.removeCookies();
+      this.selectedChamber = new ChamberVM('', new Chamber(), false);
+      this.detailedAssessment = new DetailedAssessment();
+      this.totalsBudget = new TotalsBudget();
+      this._router.navigate(['applicant/assessment']);
+      setTimeout(() => {
+        this.loader.complete();
+      }, 3000);
+    }
+  }
+}

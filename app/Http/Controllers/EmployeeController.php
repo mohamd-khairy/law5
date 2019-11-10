@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountCreated;
+use App\Mail\ConfirmationMail;
 
 class EmployeeController extends Controller
 {
@@ -27,6 +28,8 @@ class EmployeeController extends Controller
 
   public function createEmployee(Request $request)
   {
+
+    DB::beginTransaction();
 
     $this->validate($request, [
       'name' => 'required|max:255',
@@ -46,6 +49,7 @@ class EmployeeController extends Controller
     $user->isActive = $request->isActive;
     $password = $this->generate_password(8);
     $user->password = Hash::make($password);
+    $user->emailConfirmationCode = $this->generate_password(6);
     $user->token = User::generateApiToken();
     $user->sectorId = null;
     $user->save();
@@ -80,6 +84,21 @@ class EmployeeController extends Controller
     }
 
     Mail::to($user->email)->send(new AccountCreated($user->email, $password,$user->name));
+
+    if(!$user->isEmailVerified){ // false
+
+        Mail::to($user->email)->send(new ConfirmationMail($user)); 
+    }
+
+    if(count(Mail::failures()) > 0){
+
+        DB::rollback();
+
+        return response()->json(__('auth.mailNotSend'), 400);
+    }
+
+    DB::commit();
+
     return $this->respond(Response::HTTP_OK, $user->id);
   }
 

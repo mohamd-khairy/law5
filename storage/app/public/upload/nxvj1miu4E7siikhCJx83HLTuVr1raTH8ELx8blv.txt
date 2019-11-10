@@ -1,0 +1,4 @@
+//div[@id='center_column']//li//a[@title='Blouse']/img[@title='Blouse']
+//ul[@class='sf-menu clearfix menu-content']//a[contains(text(),'Women')]    //get the element using text written in the element
+//a[contains(@class,'bx-next')]      // @ class search for element using partial value
+//form[@id='account-creation_form']/div/div[@class='required form-group'][1]    //for group of elements we get the element of index-1

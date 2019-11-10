@@ -53,6 +53,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'token',
         'resetPasswordCode',
         'resetPasswordCodeCreationdate',
+        'emailConfirmationCode',
+        'isEmailVerified',
     ];
 
     /**
