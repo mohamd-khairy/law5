@@ -107,6 +107,137 @@ class OldCertificateController extends Controller
         return response()->make($pdf->stream(), 200, ['content-type' =>  'application/pdf']);
     }
 
+    public function oldExportFundCertificates(Request $request)
+    {
+        $rules = [
+            'manufacturedByOthers'    =>   'nullable|boolean',
+            'issueYearFrom'           =>   'nullable|numeric',
+            'issueYearTo'             =>   'nullable|numeric',
+            'searchText'              =>   'nullable',
+            'pageSize'                =>   'nullable|numeric|min:1',
+            'pageIndex'               =>   'nullable|numeric',
+            'sortColumn'              =>   'nullable', //nullable
+            'sortDirection'           =>   'nullable', //nullable
+        ];
+        $this->validate($request, $rules);
+
+        $sortColumn = (!empty($request->get("sortColumn"))) ? $request->get("sortColumn") : "id";
+        $sortDirection = (!empty($request->get("sortDirection"))) ? $request->get("sortDirection") : "desc";
+
+        $pageSize = (!empty($request->pageSize)) ? $request->pageSize : 50;
+        $pageIndex = (!empty($request->pageIndex)) ? $request->pageIndex : 0;
+
+        $issueYearFrom = $request->filled('issueYearFrom')? $request->issueYearFrom : "0000";
+        $issueYearTo = $request->filled('issueYearTo')? $request->issueYearTo : date("Y");
+
+        $data = OldCertificate::where('certificateTypeId' , 1)->whereBetween('issueYear', [$issueYearFrom, $issueYearTo]);
+
+        if ($request->filled('manufacturedByOthers')) {
+            $data = $data->where('manufacturingByOthers', $request->manufacturedByOthers);
+        }
+        
+        if ($request->filled('searchText')) {
+            $searchFor = $request->searchText;
+
+            $data = $data->searchCompanyName('where', $searchFor)
+            ->searchChamber('orWhere', $searchFor)
+            ->searchCertificateNumber('orWhere', $searchFor);
+        }
+
+        /** sort */
+        $data = $data->orderBy($sortColumn , $sortDirection);
+
+        /** paggination */
+        $responseCountRecords = $data->count();
+        $skip = $pageSize * $pageIndex;
+        $limit = $pageSize;
+
+        $data = $data->skip($skip)->take($limit)->get();
+
+        $response = array();
+        foreach ($data as $item) {
+            array_push($response, $item);
+        }
+        
+        if (!empty($response)) {
+            return $this->respond(Response::HTTP_OK, [
+                "listCount" => $responseCountRecords,
+                "data" => $response
+            ]);
+        }
+        else {
+            return $this->respond(Response::HTTP_OK, [
+                "listCount" => 0,
+                "data" => []
+            ]);
+        }
+    }
+
+    public function oldLaw5Certificates(Request $request)
+    {
+        $rules = [
+            'manufacturedByOthers'    =>   'nullable|boolean',
+            'issueYearFrom'           =>   'nullable|numeric',
+            'issueYearTo'             =>   'nullable|numeric',
+            'searchText'              =>   'nullable',
+            'pageSize'                =>   'nullable|numeric|min:1',
+            'pageIndex'               =>   'nullable|numeric',
+            'sortColumn'              =>   'nullable', //nullable
+            'sortDirection'           =>   'nullable', //nullable
+        ];
+        $this->validate($request, $rules);
+
+        $sortColumn = (!empty($request->get("sortColumn"))) ? $request->get("sortColumn") : "id";
+        $sortDirection = (!empty($request->get("sortDirection"))) ? $request->get("sortDirection") : "desc";
+
+        $pageSize = (!empty($request->pageSize)) ? $request->pageSize : 50;
+        $pageIndex = (!empty($request->pageIndex)) ? $request->pageIndex : 0;
+
+        $issueYearFrom = $request->filled('issueYearFrom')? $request->issueYearFrom : "0000";
+        $issueYearTo = $request->filled('issueYearTo')? $request->issueYearTo : date("Y");
+
+        $data = OldCertificate::where('certificateTypeId' , 2)->whereBetween('issueYear', [$issueYearFrom, $issueYearTo]);
+
+        if ($request->filled('manufacturedByOthers')) {
+            $data = $data->where('manufacturingByOthers', $request->manufacturedByOthers);
+        }
+        
+        if ($request->filled('searchText')) {
+            $searchFor = $request->searchText;
+
+            $data = $data->searchCompanyName('where', $searchFor)
+            ->searchChamber('orWhere', $searchFor)
+            ->searchCertificateNumber('orWhere', $searchFor);
+        }
+
+        /** sort */
+        $data = $data->orderBy($sortColumn , $sortDirection);
+
+        /** paggination */
+        $responseCountRecords = $data->count();
+        $skip = $pageSize * $pageIndex;
+        $limit = $pageSize;
+
+        $data = $data->skip($skip)->take($limit)->get();
+
+        $response = array();
+        foreach ($data as $item) {
+            array_push($response, $item);
+        }
+        
+        if (!empty($response)) {
+            return $this->respond(Response::HTTP_OK, [
+                "listCount" => $responseCountRecords,
+                "data" => $response
+            ]);
+        }
+        else {
+            return $this->respond(Response::HTTP_OK, [
+                "listCount" => 0,
+                "data" => []
+            ]);
+        }
+    }
 
     protected function respond($status, $data = [])
     {

@@ -359,6 +359,8 @@ $app->group(['prefix' => 'api', "middleware" => "PermissionFor:Admin"], function
 //Old Certificates
 
 $app->group(['prefix' => 'api', "middleware" => "PermissionFor:Admin"], function () use ($app) { 
+    $app->get('old-exportFund-Certificate', 'OldCertificateController@oldExportFundCertificates'); //admin
+    $app->get('old-law5-Certificate', 'OldCertificateController@oldLaw5Certificates'); //admin
     $app->get('oldCertificate', 'OldCertificateController@index'); //admin
     $app->get('oldCertificate/{id}/generatePDF', 'OldCertificateController@generatePDF'); //admin
     $app->get('oldCertificate/{id}', 'OldCertificateController@show'); //admin
