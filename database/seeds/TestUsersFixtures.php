@@ -29,9 +29,17 @@ class TestUsersFixtures extends Seeder
                 'password' => Hash::make("password"),
                 'isEmailVerified' => true,
                 'isActive' => true,
+                'sectorId' => null,
+                'resetPasswordCode' => null,
+                'resetPasswordCodeCreationdate' => null,
+                'step2token' => null,
+                'step2code' => null,
+                'codeCreationDate' => null ,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
             ]);
             
-            UserSetting::create(['userId' , $id]);
+            // UserSetting::create(['userId' , $id]);
         }
     }
 }

@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('roleId');
-            $table->unsignedInteger('sectorId');
+            $table->unsignedInteger('sectorId')->nullable()->default(null);
             $table->foreign('roleId')
                 ->references('id')->on('roles');
             $table->foreign('sectorId')
@@ -25,12 +25,12 @@ class CreateUsersTable extends Migration
             $table->string('telephone');
             $table->string('email');
             $table->text('password');
-            $table->text('token')->default(null)->nullable();
+            $table->text('token')->nullable()->default(null);
             $table->boolean('isEmailVerified')->default(false);
             $table->boolean('isActive');
             $table->boolean('isDeleted')->default(false);
-            $table->text('resetPasswordCode')->default(null)->nullable();
-            $table->dateTime('resetPasswordCodeCreationdate')->default(null)->nullable();
+            $table->text('resetPasswordCode')->nullable()->default(null);
+            $table->dateTime('resetPasswordCodeCreationdate')->nullable()->default(null);
             $table->timestamps();
             $table->softDeletes();
         });

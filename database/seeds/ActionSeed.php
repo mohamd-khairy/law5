@@ -11,7 +11,7 @@ class ActionSeed extends Seeder
      */
     public function run()
     {
-        DB::table('actions')->truncate();
+        // DB::table('actions')->truncate();
         DB::table('actions')->insert(['id' => '1','nameEn' => 'Create', 'nameAr' => 'إنشاء', 'key' => 'Create']);
         DB::table('actions')->insert(['id' => '2','nameEn' => 'Assign', 'nameAr' => 'تعيين', 'key' => 'Assign']);
         DB::table('actions')->insert(['id' => '3','nameEn' => 'Start review', 'nameAr' => 'ابدأ المراجعة', 'key' => 'Start review']);

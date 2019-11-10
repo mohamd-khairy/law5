@@ -19,7 +19,7 @@ class SettingsTable extends Migration
             $table->integer('automaticIDAApproveDelay')->default(60);
             $table->integer('law5CertificatePercentage')->default(40);
             $table->integer('exportFundPercentage')->default(10);
-            $table->string('executiveManagerName');
+            $table->string('executiveManagerName')->default(null)->nullable();
 
             $table->string('mailServer')->default(null)->nullable();
             $table->integer('mailServerPort')->default(null)->nullable();

@@ -19,12 +19,12 @@ class AssessmentMethodSeeder extends Seeder
         $idDetailed = DB::table('assessment_methods')->insertGetId(['nameEn' => 'detailed', 'nameAr' => 'مفصل']);
         $idTotals   = DB::table('assessment_methods')->insertGetId(['nameEn' => 'totals', 'nameAr' => 'اجماليات']);
        
-        DB::table('chambers')->truncate();
+        // DB::table('chambers')->truncate();
 
         DB::table('chambers')->insert(['nameEn' => 'Chamber of Engineering Industries', 'nameAr' => 'غرفة الصناعات الهندسية', 'assessmentMethod' => $idDetailed]);
         DB::table('chambers')->insert(['nameEn' => 'Chamber of Handicrafts', 'nameAr' => 'غرفة الحرف اليدوية', 'assessmentMethod' => $idTotals]);
        
-        DB::table('sectors')->truncate();
+        // DB::table('sectors')->truncate();
         DB::table('sectors')->insert(['nameEn' => 'Food Sector', 'nameAr' => 'الإدارة الغذائية']);
         DB::table('sectors')->insert(['nameEn' => 'Engineering Sector', 'nameAr' => 'الإدارة الهندسية']);
         DB::table('sectors')->insert(['nameEn' => 'Handicrafts Sector', 'nameAr' => 'إدارة الصناعات الصغيرة']);

@@ -11,7 +11,7 @@ class RequestStatusSeed extends Seeder
      */
     public function run()
     {
-        DB::table('requeststatus')->truncate();
+        // DB::table('requeststatus')->truncate();
 
         DB::table('requeststatus')->insert(['id' => '1','nameAr' =>'جديد','nameEn' => 'New','key' => 'New']);
         DB::table('requeststatus')->insert(['id' => '2','nameAr' =>'معين لموظف','nameEn' => 'Assigned','key' => 'Assigned']);

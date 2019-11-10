@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
 
 class SettingsSeed extends Seeder
 {
@@ -11,7 +12,7 @@ class SettingsSeed extends Seeder
      */
     public function run()
     {
-        DB::table('Settings')->truncate();
+        // DB::table('Settings')->truncate();
 
         DB::table('Settings')->insert([
             'id' => '1',
@@ -20,11 +21,11 @@ class SettingsSeed extends Seeder
             'law5CertificatePercentage' => '40',
             'exportFundPercentage' => '10',
 
-            'mailServer' => null,
-            'mailServerPort' => null,
-            'mailEnableSSL' => null,
-            'fromEmail' => null,
-            'fromEmailPassword' => null
+            'mailServer' => "smtp",
+            'mailServerPort' => 25,
+            'mailEnableSSL' => 0,
+            'fromEmail' => "test@orchtech.com",
+            'fromEmailPassword' => encrypt('TE@123456')
         ]);
     }
 }

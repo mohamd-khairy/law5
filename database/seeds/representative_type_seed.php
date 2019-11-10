@@ -11,7 +11,7 @@ class representative_type_seed extends Seeder
      */
     public function run()
     {
-        DB::table('representative_types')->truncate();
+        // DB::table('representative_types')->truncate();
 
         DB::table('representative_types')->insert(["id" => "1", 'nameEn' => 'concerned person', 'nameAr' => 'صاحب الشأن', 'needAttachment' => '0', 'key' => 'Concerned_person']);
         DB::table('representative_types')->insert(["id" => "2", 'nameEn' => 'representative', 'nameAr' => 'وكيل', 'needAttachment' => '1', 'key' => 'Representative']);

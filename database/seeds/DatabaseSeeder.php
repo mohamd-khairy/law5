@@ -12,14 +12,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // 'AssessmentMethodSeeder',
-            // 'RoleSeeder',
-            // 'CertificateTypeSeeder',
-            // 'RequestStatusSeed',
-            //'TestUsersFixtures',
-            // 'SettingsSeed',
-            // 'ActionSeed',
-            // 'representative_type_seed'
+            'RoleSeeder',
+            'TestUsersFixtures',
+            'AssessmentMethodSeeder',
+            'CertificateTypeSeeder',
+            'RequestStatusSeed',
+            'SettingsSeed',
+            'ActionSeed',
+            'representative_type_seed',
             OldCertificateTableSeeder::class
         ]);
     }
