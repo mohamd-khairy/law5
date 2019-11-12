@@ -190,7 +190,7 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <a href="{{app()->make('url')->to('/').'/user/emailconfirmation?emailConfirmationCode='.$code}}" class="button button--blue">Verify Email</a>
+                            <a href="{{app()->make('url')->to('/').'/session/mail-verification?code='.$code}}" class="button button--blue">Verify Email</a>
                           </div>
                         </td>
                       </tr>
