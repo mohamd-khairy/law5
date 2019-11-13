@@ -54,14 +54,14 @@ class CertificateController extends Controller
             $actionId = Action::where('key', 'Confirm')->first()->id;
             foreach ($cert as $c) {
         
-                $certificate = Certificate::findOrFail($c->id);
-                $requestId = $certificate->requests->id;
+                $certificate = Certificate::find($c->id);
+                $requestId = $certificate->requestId;//
                 $requestAction = RequestAction::where('requestId', $requestId)
                 ->where('actionId', $actionId)->first();
         
                 if(empty($requestAction)) {
                     
-                    return response()->json("Request is not yet confirmed", 304);
+                    return response()->json("Request is not yet confirmed", 400);
                 }
                 $certificate->issueDate = $requestAction->created_at;
                 $certificate->certificateNumber = $lastCert + 1;

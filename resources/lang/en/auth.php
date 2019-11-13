@@ -27,5 +27,6 @@ return [
     'codeSentSuccessfully'   => ['message' => ["Code Sent Successfully.."]],
     'mailNotSend'   => ['message' => ["Code Not Sent !.."]],
     'emailVerified'  => ['message' => ["Email verified successfully .."]],
+    'isVerified'  => ['message' => ["Your Email is verified .."]],
 
 ];

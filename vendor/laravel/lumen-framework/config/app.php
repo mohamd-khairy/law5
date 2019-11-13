@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Law5'),
+    'name' => env('APP_NAME', 'Lumen'),
 
     /*
     |--------------------------------------------------------------------------
@@ -104,7 +104,7 @@ return [
     |
     */
 
-    'key' => 'RCD4bRTYxd9uHWP2rszUXpQinu319fag',
+    'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
 

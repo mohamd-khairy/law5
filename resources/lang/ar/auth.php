@@ -26,4 +26,6 @@ return [
     'codeSentSuccessfully'   => ['message' => ["تم ارسال الكود بنجاح.."]],
     'mailNotSend'   => ['message' => ["لم يتم ارسال الكود بنجاح.."]],
     'emailVerified'  => ['message' => ["تم تأكيد البريد الالكتروني بنجاح.."]],
+    'isVerified'  => ['message' => ["تم تأكيد هذا البريد الابكتروني  .."]],
+
 ];

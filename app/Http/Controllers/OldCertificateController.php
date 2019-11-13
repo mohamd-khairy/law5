@@ -177,8 +177,8 @@ class OldCertificateController extends Controller
     {
         $rules = [
             'manufacturedByOthers'    =>   'nullable|boolean',
-            'issueYearFrom'           =>   'nullable|numeric',
-            'issueYearTo'             =>   'nullable|numeric',
+            'issueDateFrom'           =>   'nullable|date|before:tomorrow',
+            'issueDateTo'             =>   'nullable|date|before:tomorrow',
             'searchText'              =>   'nullable',
             'pageSize'                =>   'nullable|numeric|min:1',
             'pageIndex'               =>   'nullable|numeric',
@@ -193,10 +193,10 @@ class OldCertificateController extends Controller
         $pageSize = (!empty($request->pageSize)) ? $request->pageSize : 50;
         $pageIndex = (!empty($request->pageIndex)) ? $request->pageIndex : 0;
 
-        $issueYearFrom = $request->filled('issueYearFrom')? $request->issueYearFrom : "0000";
-        $issueYearTo = $request->filled('issueYearTo')? $request->issueYearTo : date("Y");
+        $issueYearFrom = $request->filled('issueDateFrom')? $request->issueYearFrom : "0000-00-00";
+        $issueYearTo = $request->filled('issueDateTo')? $request->issueYearTo : date("Y-m-d");
 
-        $data = OldCertificate::where('certificateTypeId' , 2)->whereBetween('issueYear', [$issueYearFrom, $issueYearTo]);
+        $data = OldCertificate::where('certificateTypeId' , 2)->whereBetween('startDate', [$issueYearFrom, $issueYearTo]);
 
         if ($request->filled('manufacturedByOthers')) {
             $data = $data->where('manufacturingByOthers', $request->manufacturedByOthers);

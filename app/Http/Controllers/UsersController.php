@@ -99,9 +99,9 @@ class UsersController extends Controller
             return response()->json(__('auth.isActive'), 422);
         }
 
-        if ($user->isEmailVerified == false) {
-            return response()->json(__('auth.isEmailVerified'), 422);
-        }
+        // if ($user->isEmailVerified == false) {
+        //     return response()->json(__('auth.isEmailVerified'), 422);
+        // }
 
         if ($user && Hash::check($password, $user->password)) {
 
@@ -357,6 +357,39 @@ class UsersController extends Controller
 
         return response()->json(__('auth.emailVerified'), 200);
  
+    }
+
+    public function resendEmailConfirmationCode(Request $request)
+    {
+
+        $this->validate($request , [ 'email' => 'required']);
+
+        $user = User::where('email' , $request->email)->first();
+
+        if(!empty($user)){
+            if(!$user->isEmailVerified){ // false
+
+                if(empty($user->emailConfirmationCode)){
+                    $user = User::find($user->id);
+                    $user->emailConfirmationCode = $this->generate_code(6);
+                    $user->save();
+                }
+                
+                Mail::to($user->email)->send(new ConfirmationMail($user)); 
+    
+                if(count(Mail::failures()) > 0){
+        
+                    return response()->json(__('auth.mailNotSend'), 400);
+                }
+            }else{
+                
+                return response()->json(__('auth.isVerified'), 400);
+            }
+        }else{
+            return response()->json(__('auth.NoUser'), 400);
+        }
+        return response()->json(__('auth.codeSentSuccessfully'), 200);
+
     }
 
     protected function generate_code($length = 8)

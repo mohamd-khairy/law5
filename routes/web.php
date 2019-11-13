@@ -21,6 +21,7 @@ $app->group(['prefix' => 'api'], function () use ($app) {
     $app->post('/login', 'UsersController@login');
 
     $app->put('/confirmEmail', 'UsersController@ConfirmEmail');
+    $app->put('/resendEmailConfirmationCode', 'UsersController@resendEmailConfirmationCode');
 
     $app->post('/forgotPassword', 'UsersController@ResetPassword');
     $app->post('/resetPassword', 'UsersController@SendResetPasswordCode');
