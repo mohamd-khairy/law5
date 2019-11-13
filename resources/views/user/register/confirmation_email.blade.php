@@ -190,7 +190,7 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <a href="{{app()->make('url')->to('/').'/session/mail-verification?code='.$code}}" class="button button--blue">Verify Email</a>
+                            <a href="http://apps.orchtech.com/law-5/session/mail-verification?code={{$code}}" class="button button--blue">Verify Email</a>
                           </div>
                         </td>
                       </tr>

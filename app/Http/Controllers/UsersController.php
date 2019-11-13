@@ -99,9 +99,9 @@ class UsersController extends Controller
             return response()->json(__('auth.isActive'), 422);
         }
 
-        // if ($user->isEmailVerified == false) {
-        //     return response()->json(__('auth.isEmailVerified'), 422);
-        // }
+        if ($user->isEmailVerified == false) {
+            return response()->json(__('auth.isEmailVerified'), 422);
+        }
 
         if ($user && Hash::check($password, $user->password)) {
 
@@ -130,7 +130,7 @@ class UsersController extends Controller
             }
 
             $user['isActive']        = ($user['isActive']) ? true : false;
-            $user['isEmailVerified'] = ($user['isEmailVerified']) ? true : false;
+            // $user['isEmailVerified'] = ($user['isEmailVerified']) ? true : false;
             unset($user['checkStep2Token']);
             unset($user['step2token']);
             unset($user['step2code']);

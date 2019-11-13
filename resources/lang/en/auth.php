@@ -15,7 +15,10 @@ return [
     'wrong'   => ['message' => ["SomeThing Wrong..."]],
     'loginMessage'   => ['message' => ["Invalid Email or password."]],
     'isActive'   => ['message' => ["Your account is not activated yet."]],
-    'isEmailVerified'   => ['message' => ["Email is not verified !."]],
+    'isEmailVerified'   => [
+        'message' => ["Email is not verified !."],
+        'isEmailVerified' => [false]
+    ],
     'ResetPasswordAfterSix'   => ['message' => ["try again after six hours.. "]],
     'ُExpiredCode'   => ['message' => ["this code is expired.. "]],
     'ForgetPasswordPage'   => ['message' => ["Go to Forgot Password Page.. "]],

@@ -14,7 +14,10 @@ return [
     'wrong'   => ['message' => ["شئ ما خطأ ..."]],
     'loginMessage'   => ['message' => ["البريد الالكترونى او كلمه المرور غير صحيحه"]],
     'isActive'   => ['message' => ["حسابك لم يتفعل بعد."]],
-    'isEmailVerified'   => ['message' => ["يجب تأكيد البريد الالكتروني !."]],
+    'isEmailVerified'   => [
+        'message' => ["يجب تأكيد البريد الالكتروني !."],
+        'isEmailVerified' => [false]
+    ],
     'ResetPasswordAfterSix'   => ['message' => ["حاول مره اخري بعد 6 ساعات."]],
     'ُExpiredCode'   => ['message' => ["هذا الكود منتهي الصلاحيه.."]],
     'ForgetPasswordPage'   => ['message' => ["اذهب الي صفحه اعاده تعيين كلمه السر.."]],
