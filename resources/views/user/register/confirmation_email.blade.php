@@ -190,7 +190,7 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <a href="http://apps.orchtech.com/law-5/session/mail-verification?code={{$code}}" class="button button--blue">Verify Email</a>
+                            <a href="{{explode('signup',$_SERVER['HTTP_REFERER'])[0]}}mail-verification?code={{$code}}" class="button button--blue">Verify Email</a>
                           </div>
                         </td>
                       </tr>
