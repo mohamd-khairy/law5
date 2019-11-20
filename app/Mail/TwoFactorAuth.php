@@ -34,7 +34,7 @@ class TwoFactorAuth extends Mailable
      */
     public function build()
     {
-        return $this->view('user.login.twoFactorAuth')->with([
+        return $this->view('user.Login.twoFactorAuth')->with([
             'name'  => $this->name,
             'email' => $this->email,
             'code'  => $this->code
