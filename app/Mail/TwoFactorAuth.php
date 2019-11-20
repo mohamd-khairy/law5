@@ -37,7 +37,7 @@ class TwoFactorAuth extends Mailable
         return $this->view('user.login.twoFactorAuth')->with([
             'name'  => $this->name,
             'email' => $this->email,
-            'code'  =>$this->code
+            'code'  => $this->code
         ]);
     }
 }
