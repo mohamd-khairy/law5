@@ -37,6 +37,6 @@ class SendResetPasswordLink extends Mailable
      */
     public function build()
     {
-        return $this->view('user.Login.reset_password')->with("time", $this->time)->with("code", $this->code)->with("token", $this->token)->with("name", $this->name)->with("email", $this->email);
+        return $this->view('user.login.reset_password')->with("time", $this->time)->with("code", $this->code)->with("token", $this->token)->with("name", $this->name)->with("email", $this->email);
     }
 }
