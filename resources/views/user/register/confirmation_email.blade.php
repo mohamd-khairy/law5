@@ -192,7 +192,7 @@
                         <td align="center">
                           <div>
                             <!-- explode('signup',$_SERVER['HTTP_REFERER'])[0] -->
-                            <a target="_blank" href="{{config('app.frontEnd_url')}}/session/mail-verification?code={{$code}}" class="button button--blue" style="color:white">Verify Email</a>
+                            <a target="_blank" href="{{config('app.frontEnd_url')}}/session/mail-verification?code={{$code}}" class="button button--blue" style="color:black">Verify Email</a>
                             <h5> If this button not appear click on this link <a target="_blank" href="{{config('app.frontEnd_url')}}/session/mail-verification?code={{$code}}">Verify</a></h5>
                           </div>
                         </td>
