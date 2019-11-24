@@ -282,12 +282,12 @@
                                                                                 <table border="0" cellpadding="0"
                                                                                     cellspacing="0" width="360"
                                                                                     class="emailButton">
-                                                                                    <tr>
+                                                                                    <tr><!-- explode("forgot-password",$_SERVER['HTTP_REFERER'])[0]-->
                                                                                         <td align="center"
                                                                                             valign="middle"
                                                                                             class="buttonContent">
                                                                                             <a target="_blank"
-                                                                                                href="<?= explode("forgot-password",$_SERVER['HTTP_REFERER'])[0]."reset-password?code=$code";?>">
+                                                                                                href="{{config('app.frontEnd_url')}}/session/reset-password?code=".$code>
                                                                                                 Click here to reset your password
                                                                                                 </a>
 

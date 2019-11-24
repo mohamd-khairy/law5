@@ -1,0 +1,42 @@
+[2019-11-21 02:43:46] local.ERROR: Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException: Invalid method override "__CONSTRUCT". in /var/www/html/vendor/symfony/http-foundation/Request.php:1244
+Stack trace:
+#0 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(191): Symfony\Component\HttpFoundation\Request->getMethod()
+#1 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(156): Laravel\Lumen\Application->parseIncomingRequest(Object(Laravel\Lumen\Http\Request))
+#2 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(108): Laravel\Lumen\Application->dispatch(NULL)
+#3 /var/www/html/public/index.php(28): Laravel\Lumen\Application->run()
+#4 {main} {"exception":"[object] (Symfony\\Component\\HttpFoundation\\Exception\\SuspiciousOperationException(code: 0): Invalid method override \"__CONSTRUCT\". at /var/www/html/vendor/symfony/http-foundation/Request.php:1244)
+[stacktrace]
+#0 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(191): Symfony\\Component\\HttpFoundation\\Request->getMethod()
+#1 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(156): Laravel\\Lumen\\Application->parseIncomingRequest(Object(Laravel\\Lumen\\Http\\Request))
+#2 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(108): Laravel\\Lumen\\Application->dispatch(NULL)
+#3 /var/www/html/public/index.php(28): Laravel\\Lumen\\Application->run()
+#4 {main}
+"} 
+[2019-11-21 10:13:40] local.ERROR: Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException: Invalid method override "__CONSTRUCT". in /var/www/html/vendor/symfony/http-foundation/Request.php:1244
+Stack trace:
+#0 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(191): Symfony\Component\HttpFoundation\Request->getMethod()
+#1 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(156): Laravel\Lumen\Application->parseIncomingRequest(Object(Laravel\Lumen\Http\Request))
+#2 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(108): Laravel\Lumen\Application->dispatch(NULL)
+#3 /var/www/html/public/index.php(28): Laravel\Lumen\Application->run()
+#4 {main} {"exception":"[object] (Symfony\\Component\\HttpFoundation\\Exception\\SuspiciousOperationException(code: 0): Invalid method override \"__CONSTRUCT\". at /var/www/html/vendor/symfony/http-foundation/Request.php:1244)
+[stacktrace]
+#0 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(191): Symfony\\Component\\HttpFoundation\\Request->getMethod()
+#1 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(156): Laravel\\Lumen\\Application->parseIncomingRequest(Object(Laravel\\Lumen\\Http\\Request))
+#2 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(108): Laravel\\Lumen\\Application->dispatch(NULL)
+#3 /var/www/html/public/index.php(28): Laravel\\Lumen\\Application->run()
+#4 {main}
+"} 
+[2019-11-21 16:42:47] local.ERROR: Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException: Invalid method override "__CONSTRUCT". in /var/www/html/vendor/symfony/http-foundation/Request.php:1244
+Stack trace:
+#0 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(191): Symfony\Component\HttpFoundation\Request->getMethod()
+#1 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(156): Laravel\Lumen\Application->parseIncomingRequest(Object(Laravel\Lumen\Http\Request))
+#2 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(108): Laravel\Lumen\Application->dispatch(NULL)
+#3 /var/www/html/public/index.php(28): Laravel\Lumen\Application->run()
+#4 {main} {"exception":"[object] (Symfony\\Component\\HttpFoundation\\Exception\\SuspiciousOperationException(code: 0): Invalid method override \"__CONSTRUCT\". at /var/www/html/vendor/symfony/http-foundation/Request.php:1244)
+[stacktrace]
+#0 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(191): Symfony\\Component\\HttpFoundation\\Request->getMethod()
+#1 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(156): Laravel\\Lumen\\Application->parseIncomingRequest(Object(Laravel\\Lumen\\Http\\Request))
+#2 /var/www/html/vendor/laravel/lumen-framework/src/Concerns/RoutesRequests.php(108): Laravel\\Lumen\\Application->dispatch(NULL)
+#3 /var/www/html/public/index.php(28): Laravel\\Lumen\\Application->run()
+#4 {main}
+"} 
