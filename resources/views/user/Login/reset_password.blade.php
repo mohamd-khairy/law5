@@ -286,9 +286,9 @@
                                                                                         <td align="center"
                                                                                             valign="middle"
                                                                                             class="buttonContent">
-                                                                                            <?php  $newtime =  strtotime($time);?>
-                                                                                            <a target="_blank"
-                                                                                                href="<?= explode("forgot-password",$_SERVER['HTTP_REFERER'])[0]."reset-password?code=$code"."&timestamp=$newtime";?>">
+                                                                                            <?php  $newtime =  strtotime($time);?> <!-- explode("forgot-password",$_SERVER['HTTP_REFERER'])[0] -->
+                                                                                            <br>
+                                                                                            <a target="_blank" href="{{config('app.frontEnd_url')}}/session/reset-password?code={{$code}}&timestamp={{$newtime}}">
                                                                                                 Click here to reset your password
                                                                                             </a>
                                                                                         </td>

@@ -108,4 +108,5 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'frontEnd_url' => 'http://apps.orchtech.com/law-5'
 ];

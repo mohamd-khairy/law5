@@ -147,6 +147,7 @@
       background-color: #FF3665;
     }
     .button--blue {
+      color: #F5F7F9;
       background-color: #414EF9;
     }
     /*Media Queries ------------------------------ */
@@ -190,7 +191,9 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <a href="{{explode('signup',$_SERVER['HTTP_REFERER'])[0]}}mail-verification?code={{$code}}" class="button button--blue">Verify Email</a>
+                            <!-- explode('signup',$_SERVER['HTTP_REFERER'])[0] -->
+                            <a target="_blank" href="{{config('app.frontEnd_url')}}/session/mail-verification?code={{$code}}" class="button button--blue" style="color:white">Verify Email</a>
+                            <h5> If this button not appear click on this link <a target="_blank" href="{{config('app.frontEnd_url')}}/session/mail-verification?code={{$code}}">Verify</a></h5>
                           </div>
                         </td>
                       </tr>
