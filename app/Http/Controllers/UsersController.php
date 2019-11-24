@@ -57,6 +57,7 @@ class UsersController extends Controller
 
         if(!$user->isEmailVerified){ // false
 
+
             Mail::to($user->email)->send(new ConfirmationMail($user)); 
 
             if(count(Mail::failures()) > 0){
@@ -171,9 +172,9 @@ class UsersController extends Controller
             /** send mail to user with the generated code  */
             Mail::to($user->email)->send(new TwoFactorAuth($user));
 
-            if (Mail::failures()) {
-                return response()->json(__('auth.mailNotSend'), 422);
-            }
+//            if (Mail::failures()) {
+  //              return response()->json(__('auth.mailNotSend'), 422);
+    //        }
 
             $step2required = true;
         }

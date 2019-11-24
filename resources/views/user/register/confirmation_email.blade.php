@@ -190,7 +190,8 @@
                       <tr>
                         <td align="center">
                           <div>
-                            <a href="{{explode('signup',$_SERVER['HTTP_REFERER'])[0]}}mail-verification?code={{$code}}" class="button button--blue">Verify Email</a>
+@php $domain = "http://apps.orchtech.com/law-5/session/"; @endphp
+                            <a href="{{$domain}}mail-verification?code={{$code}}" class="button button--blue">Verify Email</a>
                           </div>
                         </td>
                       </tr>

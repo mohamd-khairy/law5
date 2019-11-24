@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
                     'host'       => $mail->mailServer,
                     'port'       => $mail->mailServerPort,
                     'from'       => array('address' => $mail->fromEmail, 'name' => "Law5 Team"),
-                    'encryption' => "",
+                    'encryption' => $mail->mailEnableSSL,
                     'username'   => $mail->fromEmail,
                     'password'   => Crypt::decrypt($mail->fromEmailPassword),
                     'sendmail'   => '/usr/sbin/sendmail -bs',
