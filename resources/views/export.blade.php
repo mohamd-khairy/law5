@@ -19,7 +19,7 @@
 			}
 		} else {
 			$u = $app->make('url')->to('/public');
-			if($manufactor == 1){
+			if($manufactor){
 				$m = $app->make('url')->to('/public/certificate/export_new.png');
 			}else{
 				$m = $app->make('url')->to('/public/certificate/export_man_new.png');
@@ -63,7 +63,7 @@
 		<?php if (!empty($applicant->areaOrDistrict)) echo "<bdi>".$applicant->areaOrDistrict."</bdi>"; ?> 
 		<?php if (!empty($applicant->buildingNumber)) echo "<bdi>".$applicant->buildingNumber."</bdi>"; ?> 
 	</div>
-	<?php if($manufacture){ ?>
+	<?php if($manufactor){ ?>
 		<?php if (strlen($certificate->manufacturingCompanyName) > 15){ ?>
 				<div style=" font-size:10.5px;font-wight:bold;position: absolute;top:310px;right: 380px;"><?php if (!empty($certificate)) echo "<bdi>".$certificate->manufacturingCompanyName."<bdi>"; ?> </div>
 		<?php }else{ ?>
